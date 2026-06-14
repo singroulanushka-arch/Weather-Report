@@ -1,41 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Weather Dashboard</title>
-
+<title>Product Catalog</title>
 <style>
 body{
-    font-family: Arial, sans-serif;
-    background:#f4f4f4;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
+font-family:Arial;
+background:#f4f4f4;
+text-align:center;
 }
 
 .container{
-    background:white;
-    padding:30px;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,0.2);
-    width:350px;
-    text-align:center;
+width:80%;
+margin:auto;
 }
 
-input{
-    width:70%;
-    padding:10px;
+h1{
+color:#333;
+}
+
+#search{
+padding:10px;
+width:300px;
+margin-bottom:20px;
+}
+
+.products{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:20px;
+}
+
+.card{
+background:white;
+padding:15px;
+width:220px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+.card img{
+width:100%;
+height:150px;
+object-fit:cover;
 }
 
 button{
-    padding:10px 15px;
-    cursor:pointer;
-}
-
-#weather{
-    margin-top:20px;
+background:green;
+color:white;
+border:none;
+padding:10px;
+cursor:pointer;
+border-radius:5px;
 }
 </style>
 </head>
@@ -43,52 +59,66 @@ button{
 <body>
 
 <div class="container">
-    <h2>🌦 Weather Dashboard</h2>
+<h1>Product Catalog</h1>
 
-    <input type="text" id="city" placeholder="Enter City Name">
-    <button onclick="getWeather()">Search</button>
+<input type="text" id="search"
+placeholder="Search Product"
+onkeyup="searchProduct()">
 
-    <div id="weather"></div>
+<div class="products" id="products">
+
+<div class="card">
+<img src="https://via.placeholder.com/200">
+<h3>Laptop</h3>
+<p>₹50000</p>
+<button>Buy Now</button>
+</div>
+
+<div class="card">
+<img src="https://via.placeholder.com/200">
+<h3>Mobile</h3>
+<p>₹20000</p>
+<button>Buy Now</button>
+</div>
+
+<div class="card">
+<img src="https://via.placeholder.com/200">
+<h3>Headphones</h3>
+<p>₹1500</p>
+<button>Buy Now</button>
+</div>
+
+<div class="card">
+<img src="https://via.placeholder.com/200">
+<h3>Smart Watch</h3>
+<p>₹3000</p>
+<button>Buy Now</button>
+</div>
+
+</div>
 </div>
 
 <script>
+function searchProduct(){
+let input =
+document.getElementById("search")
+.value.toLowerCase();
 
-async function getWeather(){
+let cards =
+document.querySelectorAll(".card");
 
-    const city = document.getElementById("city").value;
+cards.forEach(card=>{
+let title =
+card.querySelector("h3")
+.innerText.toLowerCase();
 
-    const apiKey = "a153459042aa69296ca6031d6cbde30b";
-
-    const url =
-    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-
-    try{
-
-        const response = await fetch(url);
-
-        if(!response.ok){
-            throw new Error("City not found");
-        }
-
-        const data = await response.json();
-
-        document.getElementById("weather").innerHTML = `
-            <h3>${data.name}</h3>
-            <p>🌡 Temperature: ${data.main.temp} °C</p>
-            <p>💧 Humidity: ${data.main.humidity}%</p>
-            <p>🌬 Wind Speed: ${data.wind.speed} m/s</p>
-            <p>☁ Weather: ${data.weather[0].description}</p>
-        `;
-
-    }
-    catch(error){
-
-        document.getElementById("weather").innerHTML =
-        `<p style="color:red;">${error.message}</p>`;
-
-    }
+if(title.includes(input)){
+card.style.display="block";
+}else{
+card.style.display="none";
 }
-
+});
+}
 </script>
 
 </body>
